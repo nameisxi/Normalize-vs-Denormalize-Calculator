@@ -1,33 +1,33 @@
 package dao;
 
 import db.NormalizedDatabase;
-import domain.Page;
+import domain.Customer;
 
 import java.util.*;
 import java.sql.*;
 
-public class PageDao implements Dao<Page, Integer> {
+public class CustomerDao implements Dao<Customer, Integer> {
     private NormalizedDatabase db;
 
-    public PageDao(NormalizedDatabase db) {
+    public CustomerDao(NormalizedDatabase db) {
         this.db = db;
     }
 
     @Override
-    public Page findOne(Integer key) throws SQLException {
+    public Customer findOne(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<Page> findAll() throws SQLException {
+    public List<Customer> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Page saveOrUpdate(Page p) throws SQLException {
+    public Customer saveOrUpdate(Customer c) throws SQLException {
         Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT id FROM User WHERE id = (?)");
-        statement.setInt(1, p.getId());
+        PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT id FROM Customer WHERE id = (?)");
+        statement.setInt(1, c.getId());
         ResultSet rs = statement.executeQuery();
 
         statement.close();
@@ -35,38 +35,37 @@ public class PageDao implements Dao<Page, Integer> {
 
         if (rs == null) {
             rs.close();
-            return this.save(p);
+            return this.save(c);
         } else {
             rs.close();
-            return this.update(p);
+            return this.update(c);
         }
-
     }
 
-    public Page save(Page p) throws SQLException {
+    public Customer save(Customer c) throws SQLException {
         Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO Page (id, address) VALUES (?, ?)");
-        statement.setInt(1, p.getId());
-        statement.setString(2, p.getAddress());
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO Customer (id, name) VALUES (?, ?)");
+        statement.setInt(1, c.getId());
+        statement.setString(2, c.getName());
         statement.executeUpdate();
 
         statement.close();
         connection.close();
 
-        return p;
+        return c;
     }
 
-    public Page update(Page p) throws SQLException {
+    public Customer update(Customer c) throws SQLException {
         Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("UPDATE Page SET address = (?) WHERE id = (?)");
-        statement.setString(1, p.getAddress());
-        statement.setInt(2, p.getId());
+        PreparedStatement statement = connection.prepareStatement("UPDATE Customer SET name = (?) WHERE id = (?)");
+        statement.setString(1, c.getName());
+        statement.setInt(2, c.getId());
         statement.executeUpdate();
 
         statement.close();
         connection.close();
 
-        return p;
+        return c;
     }
 
     @Override

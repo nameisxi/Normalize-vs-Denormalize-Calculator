@@ -1,33 +1,33 @@
 package dao;
 
 import db.NormalizedDatabase;
-import domain.User;
+import domain.Seller;
 
 import java.util.*;
 import java.sql.*;
 
-public class UserDao implements Dao<User, Integer> {
+public class SellerDao implements Dao<Seller, Integer> {
     private NormalizedDatabase db;
 
-    public UserDao(NormalizedDatabase db) {
+    public SellerDao(NormalizedDatabase db) {
         this.db = db;
     }
 
     @Override
-    public User findOne(Integer key) throws SQLException {
+    public Seller findOne(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<User> findAll() throws SQLException {
+    public List<Seller> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public User saveOrUpdate(User u) throws SQLException {
+    public Seller saveOrUpdate(Seller s) throws SQLException {
         Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT id FROM User WHERE id = (?)");
-        statement.setInt(1, u.getId());
+        PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT id FROM Seller WHERE id = (?)");
+        statement.setInt(1, s.getId());
         ResultSet rs = statement.executeQuery();
 
         statement.close();
@@ -35,37 +35,38 @@ public class UserDao implements Dao<User, Integer> {
 
         if (rs == null) {
             rs.close();
-            return this.save(u);
+            return this.save(s);
         } else {
             rs.close();
-            return this.update(u);
+            return this.update(s);
         }
+
     }
 
-    public User save(User u) throws SQLException {
+    public Seller save(Seller s) throws SQLException {
         Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO User (id, username) VALUES (?, ?)");
-        statement.setInt(1, u.getId());
-        statement.setString(2, u.getUsername());
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO Seller (id, name) VALUES (?, ?)");
+        statement.setInt(1, s.getId());
+        statement.setString(2, s.getName());
         statement.executeUpdate();
 
         statement.close();
         connection.close();
 
-        return u;
+        return s;
     }
 
-    public User update(User u) throws SQLException {
+    public Seller update(Seller s) throws SQLException {
         Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("UPDATE User SET username = (?) WHERE id = (?)");
-        statement.setString(1, u.getUsername());
-        statement.setInt(2, u.getId());
+        PreparedStatement statement = connection.prepareStatement("UPDATE Seller SET name = (?) WHERE id = (?)");
+        statement.setString(1, s.getName());
+        statement.setInt(2, s.getId());
         statement.executeUpdate();
 
         statement.close();
         connection.close();
 
-        return u;
+        return s;
     }
 
     @Override

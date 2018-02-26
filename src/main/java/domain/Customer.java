@@ -1,12 +1,12 @@
 package domain;
 
-public class User {
+public class Customer {
     private Integer id;
-    private String username;
+    private String name;
 
-    public User(Integer id, String username) {
+    public Customer(Integer id, String name) {
         this.id = id;
-        this.username = username;
+        this.name = name;
     }
 
     public Integer getId() {
@@ -17,11 +17,11 @@ public class User {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
     public void setUsername(String username) {
-        this.username = username;
+        this.name = name;
     }
 }

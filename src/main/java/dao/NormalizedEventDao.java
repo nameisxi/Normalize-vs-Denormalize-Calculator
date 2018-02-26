@@ -1,12 +1,12 @@
 package dao;
 
 import db.NormalizedDatabase;
-import domain.NormalizedEvent;
+import domain.NormalizedShipping;
 
 import java.util.*;
 import java.sql.*;
 
-public class NormalizedEventDao implements Dao<NormalizedEvent, Integer> {
+public class NormalizedEventDao implements Dao<NormalizedShipping, Integer> {
     private NormalizedDatabase db;
 
     public NormalizedEventDao(NormalizedDatabase db) {
@@ -14,64 +14,64 @@ public class NormalizedEventDao implements Dao<NormalizedEvent, Integer> {
     }
 
     @Override
-    public NormalizedEvent findOne(Integer key) throws SQLException {
+    public NormalizedShipping findOne(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<NormalizedEvent> findAll() throws SQLException {
+    public List<NormalizedShipping> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public NormalizedEvent saveOrUpdate(NormalizedEvent n) throws SQLException {
+    public NormalizedShipping saveOrUpdate(NormalizedShipping ns) throws SQLException {
         Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT id FROM Tapahtuma WHERE id = (?)");
-        statement.setInt(1, n.getId());
+        PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT id FROM Shipping WHERE id = (?)");
+        statement.setInt(1, ns.getId());
         ResultSet rs = statement.executeQuery();
 
         if (!rs.next()) {
             rs.close();
-            return this.save(n);
+            return this.save(ns);
         } else {
             rs.close();
-            return this.update(n);
+            return this.update(ns);
         }
 
     }
 
-    public NormalizedEvent save(NormalizedEvent n) throws SQLException {
+    public NormalizedShipping save(NormalizedShipping ns) throws SQLException {
         Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO Event (id, user_id, page_id, date, operation, ip, device) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        statement.setInt(1, n.getId());
-        statement.setInt(2, n.getUser().getId());
-        statement.setInt(3, n.getPage().getId());
-        statement.setDate(4, n.getDate());
-        statement.setString(5, n.getOperation());
-        statement.setString(6, n.getIp());
-        statement.setString(7, n.getDevice());
+        PreparedStatement statement = connection.prepareStatement("INSERT INTO Shipping (id, customer_id, seller_id, date, shipping_class, address, method_of_shipping) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        statement.setInt(1, ns.getId());
+        statement.setInt(2, ns.getCustomer().getId());
+        statement.setInt(3, ns.getSeller().getId());
+        statement.setDate(4, ns.getDate());
+        statement.setString(5, ns.getShippingClass());
+        statement.setString(6, ns.getAddress());
+        statement.setString(7, ns.getMethodOfShipping());
         statement.executeUpdate();
 
         statement.close();
         connection.close();
 
-        return n;
+        return ns;
     }
 
-    public NormalizedEvent update(NormalizedEvent n) throws SQLException {
+    public NormalizedShipping update(NormalizedShipping ns) throws SQLException {
         Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("UPDATE Event SET date = (?), operation = (?), ip = (?), device = (?) WHERE id = (?)");
-        statement.setDate(1, n.getDate());
-        statement.setString(2, n.getOperation());
-        statement.setString(3, n.getIp());
-        statement.setString(4, n.getDevice());
-        statement.setInt(5, n.getId());
+        PreparedStatement statement = connection.prepareStatement("UPDATE Event SET date = (?), shipping_class = (?), address = (?), method_of_shipping = (?) WHERE id = (?)");
+        statement.setDate(1, ns.getDate());
+        statement.setString(2, ns.getShippingClass());
+        statement.setString(3, ns.getAddress());
+        statement.setString(4, ns.getMethodOfShipping());
+        statement.setInt(5, ns.getId());
         statement.executeUpdate();
 
         statement.close();
         connection.close();
 
-        return n;
+        return ns;
     }
 
     @Override

@@ -1,22 +1,20 @@
 package domain;
 
 import java.sql.Date;
-import java.util.*;
-import java.sql.*;
 
-public class DenormalizedEvent {
+public class NormalizedShipping {
     private Integer id;
-    private String customerName;
-    private String sellerName;
+    private Customer customer;
+    private Seller seller;
     private Date date;
     private String shippingClass;
     private String address;
     private String methodOfShipping;
 
-    public DenormalizedEvent(Integer id, String customerName, String sellerName, Date date, String shippingClass, String address, String methodOfShipping) {
+    public NormalizedShipping(Integer id, Customer customer, Seller seller, Date date, String shippingClass, String address, String methodOfShipping) {
         this.id = id;
-        this.customerName = customerName;
-        this.sellerName = sellerName;
+        this.customer = customer;
+        this.seller = seller;
         this.date = date;
         this.shippingClass = shippingClass;
         this.address = address;
@@ -31,20 +29,20 @@ public class DenormalizedEvent {
         this.id = id;
     }
 
-    public String getCustomerName() {
-        return customerName;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerName(String customerName) {
-        this.customerName = customerName;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
-    public String getSellerName() {
-        return sellerName;
+    public Seller getSeller() {
+        return seller;
     }
 
-    public void setSellerName(String sellerName) {
-        this.sellerName = sellerName;
+    public void setSeller(Seller seller) {
+        this.seller = seller;
     }
 
     public Date getDate() {

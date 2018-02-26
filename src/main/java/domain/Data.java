@@ -3,28 +3,20 @@ package domain;
 import java.sql.Date;
 
 public class Data {
-    String ip;
     String address;
-    String operation;
-    String user;
-    String device;
+    String sellerName;
+    String shippingClass;
+    String customerName;
+    String methodOfShipping;
     Date date;
 
-    public Data(String ip, String address, String operation, String user, String device, Date date) {
-        this.ip = ip;
+    public Data(String address, String sellerName, String shippingClass, String customerName, String methodOfShipping, Date date) {
         this.address = address;
-        this.operation = operation;
-        this.user = user;
-        this.device = device;
+        this.sellerName = sellerName;
+        this.shippingClass = shippingClass;
+        this.customerName = customerName;
+        this.methodOfShipping = methodOfShipping;
         this.date = date;
-    }
-
-    public String getIp() {
-        return ip;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
     }
 
     public String getAddress() {
@@ -35,28 +27,36 @@ public class Data {
         this.address = address;
     }
 
-    public String getOperation() {
-        return operation;
+    public String getSellerName() {
+        return sellerName;
     }
 
-    public void setOperation(String operation) {
-        this.operation = operation;
+    public void setsellerName(String sellerName) {
+        this.sellerName = sellerName;
     }
 
-    public String getUser() {
-        return user;
+    public String getShippingClass() {
+        return shippingClass;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setShippingClass(String shippingClass) {
+        this.shippingClass = shippingClass;
     }
 
-    public String getDevice() {
-        return device;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setDevice(String device) {
-        this.device = device;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getMethodOfShipping() {
+        return methodOfShipping;
+    }
+
+    public void setMethodOfShipping(String methodOfShipping) {
+        this.methodOfShipping = methodOfShipping;
     }
 
     public Date getDate() {
