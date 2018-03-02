@@ -6,10 +6,10 @@ import domain.NormalizedShipping;
 import java.util.*;
 import java.sql.*;
 
-public class NormalizedEventDao implements Dao<NormalizedShipping, Integer> {
+public class NormalizedShippingDao implements Dao<NormalizedShipping, Integer> {
     private NormalizedDatabase db;
 
-    public NormalizedEventDao(NormalizedDatabase db) {
+    public NormalizedShippingDao(NormalizedDatabase db) {
         this.db = db;
     }
 
@@ -60,7 +60,7 @@ public class NormalizedEventDao implements Dao<NormalizedShipping, Integer> {
 
     public NormalizedShipping update(NormalizedShipping ns) throws SQLException {
         Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("UPDATE Event SET date = (?), shipping_class = (?), address = (?), method_of_shipping = (?) WHERE id = (?)");
+        PreparedStatement statement = connection.prepareStatement("UPDATE Shipping SET date = (?), shipping_class = (?), address = (?), method_of_shipping = (?) WHERE id = (?)");
         statement.setDate(1, ns.getDate());
         statement.setString(2, ns.getShippingClass());
         statement.setString(3, ns.getAddress());

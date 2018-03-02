@@ -1,31 +1,31 @@
 package dao;
 
 import db.DenormalizedDatabase;
-import domain.DenormalizedEvent;
+import domain.DenormalizedShipping;
 
 import java.util.*;
 import java.sql.*;
 
-public class DenormalizedEventDao implements Dao<DenormalizedEvent, Integer> {
+public class DenormalizedShippingDao implements Dao<DenormalizedShipping, Integer> {
 
     private DenormalizedDatabase db;
 
-    public DenormalizedEventDao(DenormalizedDatabase db) {
+    public DenormalizedShippingDao(DenormalizedDatabase db) {
         this.db = db;
     }
 
     @Override
-    public DenormalizedEvent findOne(Integer key) throws SQLException {
+    public DenormalizedShipping findOne(Integer key) throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public List<DenormalizedEvent> findAll() throws SQLException {
+    public List<DenormalizedShipping> findAll() throws SQLException {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public DenormalizedEvent saveOrUpdate(DenormalizedEvent dn) throws SQLException {
+    public DenormalizedShipping saveOrUpdate(DenormalizedShipping dn) throws SQLException {
         Connection connection = this.db.getConnection();
         PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT id FROM Shipping WHERE id = (?)");
         statement.setInt(1, dn.getId());
@@ -40,7 +40,7 @@ public class DenormalizedEventDao implements Dao<DenormalizedEvent, Integer> {
         }
     }
 
-    public DenormalizedEvent save(DenormalizedEvent dn) throws SQLException {
+    public DenormalizedShipping save(DenormalizedShipping dn) throws SQLException {
         Connection connection = this.db.getConnection();
         PreparedStatement statement = connection.prepareStatement("INSERT INTO Shipping (id, customer_name, seller_name, date, shipping_class, address, method_of_shipping) VALUES (?, ?, ?, ?, ?, ?, ?)");
         statement.setInt(1, dn.getId());
@@ -58,7 +58,7 @@ public class DenormalizedEventDao implements Dao<DenormalizedEvent, Integer> {
         return dn;
     }
 
-    public DenormalizedEvent update(DenormalizedEvent dn) throws SQLException {
+    public DenormalizedShipping update(DenormalizedShipping dn) throws SQLException {
         Connection connection = this.db.getConnection();
         PreparedStatement statement = connection.prepareStatement("UPDATE Shipping SET customer_name = (?), seller_name = (?), date = (?), shipping_class = (?), address = (?), method_of_shipping = (?) WHERE id = (?)");
         statement.setString(1, dn.getCustomerName());

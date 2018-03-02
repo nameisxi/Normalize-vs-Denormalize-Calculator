@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.*;
 import java.sql.*;
 
-public class DenormalizedEvent {
+public class DenormalizedShipping {
     private Integer id;
     private String customerName;
     private String sellerName;
@@ -13,7 +13,7 @@ public class DenormalizedEvent {
     private String address;
     private String methodOfShipping;
 
-    public DenormalizedEvent(Integer id, String customerName, String sellerName, Date date, String shippingClass, String address, String methodOfShipping) {
+    public DenormalizedShipping(Integer id, String customerName, String sellerName, Date date, String shippingClass, String address, String methodOfShipping) {
         this.id = id;
         this.customerName = customerName;
         this.sellerName = sellerName;

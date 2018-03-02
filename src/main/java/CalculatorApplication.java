@@ -1,5 +1,5 @@
-import dao.DenormalizedEventDao;
-import dao.NormalizedEventDao;
+import dao.DenormalizedShippingDao;
+import dao.NormalizedShippingDao;
 import dao.SellerDao;
 import dao.CustomerDao;
 import db.DenormalizedDatabase;
@@ -19,28 +19,30 @@ public class CalculatorApplication {
         }
 
         // Denormalized database
-        File dbFile1 = new File("db", "events-denormalized.db");
+        File dbFile1 = new File("db", "denormalized.db");
 
         DenormalizedDatabase denormalizedDB = new DenormalizedDatabase("jdbc:sqlite:" + dbFile1.getAbsolutePath());
-        DenormalizedEventDao dnEventDao = new DenormalizedEventDao(denormalizedDB);
+        DenormalizedShippingDao dnEventDao = new DenormalizedShippingDao(denormalizedDB);
 
         long start1 = System.nanoTime();
         int id1 = 1;
         for (Data row : data) {
-            DenormalizedEvent dn = new DenormalizedEvent(id1, row.getCustomerName(), row.getSellerName(), row.getDate(), row.getShippingClass(), row.getAddress(), row.getMethodOfShipping());
+            DenormalizedShipping dn = new DenormalizedShipping(id1, row.getCustomerName(), row.getSellerName(), row.getDate(), row.getShippingClass(), row.getAddress(), row.getMethodOfShipping());
             dnEventDao.saveOrUpdate(dn);
             id1++;
         }
 
         long end1 = System.nanoTime();
-        System.out.println("It took " + (end1 - start1) + " nanoseconds and " + ((double)(end1 - start1) / 1000000000.0) + " seconds to add the data to denormalized database.");
+        System.out.println("+--------------------------------------------------------------------------------------------------------+");
+        System.out.println("|  It took " + ((double)(end1 - start1) / 1000000000.0) + " seconds, or " + (end1 - start1)  + " nanoseconds to add the data to the denormalized database.");
+        System.out.println("+--------------------------------------------------------------------------------------------------------+");
 
 
         // Normalized database
-        File dbFile2 = new File("db", "events-normalized.db");
+        File dbFile2 = new File("db", "normalized.db");
 
         NormalizedDatabase normalizedDB = new NormalizedDatabase("jdbc:sqlite:" + dbFile2.getAbsolutePath());
-        NormalizedEventDao nEventDao = new NormalizedEventDao(normalizedDB);
+        NormalizedShippingDao nEventDao = new NormalizedShippingDao(normalizedDB);
         CustomerDao customerDao = new CustomerDao(normalizedDB);
         SellerDao sellerDao = new SellerDao(normalizedDB);
 
@@ -57,8 +59,8 @@ public class CalculatorApplication {
         }
 
         long end2 = System.nanoTime();
-
-        System.out.println("It took " + (end2 - start2) + " nanoseconds and " + ((double)(end2 - start2) / 1000000000.0) + " seconds to add the data to normalized database.");
+        System.out.println("|  It took " + ((double)(end2 - start2) / 1000000000.0) + " seconds, or " + (end2 - start2)  + " nanoseconds to add the data to the normalized database.");
+        System.out.println("+--------------------------------------------------------------------------------------------------------+");
     }
 
 }
