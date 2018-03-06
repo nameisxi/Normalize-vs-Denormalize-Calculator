@@ -25,47 +25,44 @@ public class SellerDao implements Dao<Seller, Integer> {
 
     @Override
     public Seller saveOrUpdate(Seller s) throws SQLException {
-        Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT id FROM Seller WHERE id = (?)");
-        statement.setInt(1, s.getId());
-        ResultSet rs = statement.executeQuery();
+        try (Connection connection = this.db.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT id FROM Seller WHERE id = (?)");
+            statement.setInt(1, s.getId());
+            ResultSet rs = statement.executeQuery();
 
-        statement.close();
-        connection.close();
+            statement.close();
 
-        if (rs == null) {
-            rs.close();
-            return this.save(s);
-        } else {
-            rs.close();
-            return this.update(s);
+            if (rs == null) {
+                rs.close();
+                return this.save(s);
+            } else {
+                rs.close();
+                return this.update(s);
+            }
         }
-
     }
 
     public Seller save(Seller s) throws SQLException {
-        Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO Seller (id, name) VALUES (?, ?)");
-        statement.setInt(1, s.getId());
-        statement.setString(2, s.getName());
-        statement.executeUpdate();
+        try (Connection connection = this.db.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Seller (id, name) VALUES (?, ?)");
+            statement.setInt(1, s.getId());
+            statement.setString(2, s.getName());
+            statement.executeUpdate();
 
-        statement.close();
-        connection.close();
-
+            statement.close();
+        }
         return s;
     }
 
     public Seller update(Seller s) throws SQLException {
-        Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("UPDATE Seller SET name = (?) WHERE id = (?)");
-        statement.setString(1, s.getName());
-        statement.setInt(2, s.getId());
-        statement.executeUpdate();
+        try (Connection connection = this.db.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("UPDATE Seller SET name = (?) WHERE id = (?)");
+            statement.setString(1, s.getName());
+            statement.setInt(2, s.getId());
+            statement.executeUpdate();
 
-        statement.close();
-        connection.close();
-
+            statement.close();
+        }
         return s;
     }
 

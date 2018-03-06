@@ -12,9 +12,22 @@ import java.util.*;
 public class CalculatorApplication {
 
     public static void main(String[] args) throws Exception {
+        Scanner sc = new Scanner(System.in);
+        Integer linesToSave = 0;
+        while (true) {
+            System.out.println("Insert how many lines you'd like to save into the databases (max 100 000 lines)." );
+            System.out.println("1000 lines = ~25 seconds per database on an SSD.");
+            System.out.print("> ");
+            linesToSave = Integer.parseInt(sc.nextLine());
+            if (linesToSave <= 100000) {
+                System.out.println("Saving to databases...");
+                break;
+            }
+        }
+
         DataGenerator generator = new DataGenerator();
         List<Data> data = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < linesToSave; i++) {
             data.add(new Data(generator.address(), generator.sellerName(), generator.shippingClass(), generator.customerName(), generator.methodOfShipping(), generator.date()));
         }
 
@@ -22,13 +35,13 @@ public class CalculatorApplication {
         File dbFile1 = new File("db", "denormalized.db");
 
         DenormalizedDatabase denormalizedDB = new DenormalizedDatabase("jdbc:sqlite:" + dbFile1.getAbsolutePath());
-        DenormalizedShippingDao dnEventDao = new DenormalizedShippingDao(denormalizedDB);
+        DenormalizedShippingDao dnShippingDao = new DenormalizedShippingDao(denormalizedDB);
 
         long start1 = System.nanoTime();
         int id1 = 1;
         for (Data row : data) {
             DenormalizedShipping dn = new DenormalizedShipping(id1, row.getCustomerName(), row.getSellerName(), row.getDate(), row.getShippingClass(), row.getAddress(), row.getMethodOfShipping());
-            dnEventDao.saveOrUpdate(dn);
+            dnShippingDao.saveOrUpdate(dn);
             id1++;
         }
 
@@ -42,7 +55,7 @@ public class CalculatorApplication {
         File dbFile2 = new File("db", "normalized.db");
 
         NormalizedDatabase normalizedDB = new NormalizedDatabase("jdbc:sqlite:" + dbFile2.getAbsolutePath());
-        NormalizedShippingDao nEventDao = new NormalizedShippingDao(normalizedDB);
+        NormalizedShippingDao nShippingDao = new NormalizedShippingDao(normalizedDB);
         CustomerDao customerDao = new CustomerDao(normalizedDB);
         SellerDao sellerDao = new SellerDao(normalizedDB);
 
@@ -54,13 +67,16 @@ public class CalculatorApplication {
             Seller seller = new Seller(id2, row.getSellerName());
             sellerDao.saveOrUpdate(seller);
             NormalizedShipping ne = new NormalizedShipping(id2, customer, seller, row.getDate(), row.getShippingClass(), row.getAddress(), row.getMethodOfShipping());
-            nEventDao.saveOrUpdate(ne);
+            nShippingDao.saveOrUpdate(ne);
             id2++;
         }
 
         long end2 = System.nanoTime();
         System.out.println("|  It took " + ((double)(end2 - start2) / 1000000000.0) + " seconds, or " + (end2 - start2)  + " nanoseconds to add the data to the normalized database.");
         System.out.println("+--------------------------------------------------------------------------------------------------------+");
+
+        dnShippingDao.deleteAll();
+        nShippingDao.deleteAll();
     }
 
 }

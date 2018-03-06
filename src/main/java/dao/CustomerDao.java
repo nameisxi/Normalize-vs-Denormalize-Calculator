@@ -25,46 +25,44 @@ public class CustomerDao implements Dao<Customer, Integer> {
 
     @Override
     public Customer saveOrUpdate(Customer c) throws SQLException {
-        Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT id FROM Customer WHERE id = (?)");
-        statement.setInt(1, c.getId());
-        ResultSet rs = statement.executeQuery();
+        try (Connection connection = this.db.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT DISTINCT id FROM Customer WHERE id = (?)");
+            statement.setInt(1, c.getId());
+            ResultSet rs = statement.executeQuery();
 
-        statement.close();
-        connection.close();
+            statement.close();
 
-        if (rs == null) {
-            rs.close();
-            return this.save(c);
-        } else {
-            rs.close();
-            return this.update(c);
+            if (rs == null) {
+                rs.close();
+                return this.save(c);
+            } else {
+                rs.close();
+                return this.update(c);
+            }
         }
     }
 
     public Customer save(Customer c) throws SQLException {
-        Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("INSERT INTO Customer (id, name) VALUES (?, ?)");
-        statement.setInt(1, c.getId());
-        statement.setString(2, c.getName());
-        statement.executeUpdate();
+        try (Connection connection = this.db.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO Customer (id, name) VALUES (?, ?)");
+            statement.setInt(1, c.getId());
+            statement.setString(2, c.getName());
+            statement.executeUpdate();
 
-        statement.close();
-        connection.close();
-
+            statement.close();
+        }
         return c;
     }
 
     public Customer update(Customer c) throws SQLException {
-        Connection connection = this.db.getConnection();
-        PreparedStatement statement = connection.prepareStatement("UPDATE Customer SET name = (?) WHERE id = (?)");
-        statement.setString(1, c.getName());
-        statement.setInt(2, c.getId());
-        statement.executeUpdate();
+        try (Connection connection = this.db.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("UPDATE Customer SET name = (?) WHERE id = (?)");
+            statement.setString(1, c.getName());
+            statement.setInt(2, c.getId());
+            statement.executeUpdate();
 
-        statement.close();
-        connection.close();
-
+            statement.close();
+        }
         return c;
     }
 
